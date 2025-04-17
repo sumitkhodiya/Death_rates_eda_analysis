@@ -24,7 +24,7 @@ plt.tight_layout()
 plt.show()
 
 
-# 4. Distribution of suicide rates
+# 2. Distribution of suicide rates
 plt.figure(figsize=(10, 6))
 sns.histplot(df['ESTIMATE'].dropna(), bins=30, kde=True)
 plt.title('Distribution of Suicide Rates', fontsize=16)
@@ -33,7 +33,7 @@ plt.ylabel('Frequency', fontsize=12)
 plt.tight_layout()
 plt.show()
 
-# 5. Box plot showing suicide rates by demographic groups
+# 3. Box plot showing suicide rates by demographic groups
 plt.figure(figsize=(12, 6))
 demo_data = df[(df['AGE'] == 'All ages')]
 sns.boxplot(x='STUB_NAME', y='ESTIMATE', data=demo_data)
@@ -44,7 +44,7 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
 
-# 6. Demographic group comparisons over time
+# 4. Demographic group comparisons over time
 plt.figure(figsize=(14, 7))
 demo_time_data = df[(df['AGE'] == 'All ages') & (df['STUB_NAME'] != 'Total')]
 
@@ -60,7 +60,7 @@ plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-# 7. Create a correlation heatmap for numerical columns
+# 5. Create a correlation heatmap for numerical columns
 numerical_cols = ['YEAR', 'YEAR_NUM', 'AGE_NUM', 'ESTIMATE']
 correlation = df[numerical_cols].corr()
 
@@ -70,21 +70,21 @@ plt.title('Correlation Matrix of Numerical Variables', fontsize=16)
 plt.tight_layout()
 plt.show()
 
-# 8. Top demographic groups with highest suicide rates (most recent year)
-recent_demo = df[(df['YEAR'] == recent_year) & 
+# 6. Top demographic groups with highest suicide rates (most recent year)
+recent_demo = df[(df['YEAR'] == df['YEAR'].max()) & 
                  (df['AGE'] == 'All ages') & 
                  (df['STUB_NAME'] != 'Total')]
 
 plt.figure(figsize=(12, 6))
 sorted_demo = recent_demo.sort_values('ESTIMATE', ascending=False).head(10)
 sns.barplot(x='ESTIMATE', y='STUB_NAME', data=sorted_demo)
-plt.title(f'Top Demographics by Suicide Rate ({recent_year})', fontsize=16)
+plt.title(f'Top Demographics by Suicide Rate ({df['YEAR'].max()})', fontsize=16)
 plt.xlabel('Deaths per 100,000 population', fontsize=12)
 plt.ylabel('Demographic Group', fontsize=12)
 plt.tight_layout()
 plt.show()
 
-# 9. Time series decomposition - showing yearly trends
+# 7. Time series decomposition - showing yearly trends
 plt.figure(figsize=(14, 6))
 yearly_avg = df[(df['AGE'] == 'All ages') & (df['STUB_NAME'] == 'Total')].groupby('YEAR')['ESTIMATE'].mean()
 yearly_avg.plot()
@@ -95,7 +95,7 @@ plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-# 10. Alternative to the problematic heatmap - Create a pairplot for key variables
+# 8. Alternative to the problematic heatmap - Create a pairplot for key variables
 sample_data = df.sample(min(1000, len(df)))
 sns.pairplot(sample_data[['YEAR', 'AGE_NUM', 'ESTIMATE']])
 plt.suptitle('Relationships Between Key Variables', y=1.02, fontsize=16)
